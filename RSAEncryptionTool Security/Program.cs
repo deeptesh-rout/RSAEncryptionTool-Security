@@ -15,11 +15,12 @@ namespace RSAEncryptionTool
 
             while (true)
             {
-                Console.WriteLine("Choose an option:");
+                Console.WriteLine("\nChoose an option:");
                 Console.WriteLine("1. Generate new keys");
                 Console.WriteLine("2. Encrypt a message");
                 Console.WriteLine("3. Decrypt a message");
-                Console.WriteLine("4. Exit");
+                Console.WriteLine("4. View keys");
+                Console.WriteLine("5. Exit");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -34,6 +35,9 @@ namespace RSAEncryptionTool
                         DecryptMessage();
                         break;
                     case "4":
+                        ViewKeys();
+                        break;
+                    case "5":
                         SaveKeys();
                         return;
                     default:
@@ -51,7 +55,6 @@ namespace RSAEncryptionTool
                 string privateKey = System.IO.File.ReadAllText("privateKey.xml");
 
                 rsa = new RSACryptoServiceProvider(2048);
-                rsa.FromXmlString(publicKey);
                 rsa.FromXmlString(privateKey);
 
                 Console.WriteLine("Keys loaded successfully.");
@@ -124,6 +127,18 @@ namespace RSAEncryptionTool
             {
                 Console.WriteLine($"Decryption failed: {ex.Message}");
             }
+        }
+
+        static void ViewKeys()
+        {
+            string publicKey = rsa.ToXmlString(false);
+            string privateKey = rsa.ToXmlString(true);
+
+            Console.WriteLine("\nPublic Key:");
+            Console.WriteLine(publicKey);
+
+            Console.WriteLine("\nPrivate Key:");
+            Console.WriteLine(privateKey);
         }
     }
 }
